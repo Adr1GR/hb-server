@@ -1,0 +1,24 @@
+# Ignore .env file
+.env
+
+# Ignore compiled files and directories
+*.pyc
+__pycache__/
+*.class
+target/
+*.log
+
+# Ignore IntelliJ files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Ignore node_modules
+node_modules/
+
+# Ignore .DS_Store
+.DS_Store
+
+# Ignore .DS_Store
+.DS_Store
