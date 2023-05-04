@@ -12,6 +12,9 @@ This is the server for the HorseBreeders app. It is a RESTful API built with Nod
 
 4. Start the server: `npm run wApi`
 
+## Documentation
+
+[Documentation website](https://hbserverdocs.netlify.app/)
 
 ## License
 
