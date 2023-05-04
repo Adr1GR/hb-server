@@ -22,3 +22,12 @@ node_modules/
 
 # Ignore .DS_Store
 .DS_Store
+
+# Ignore documentation site
+docs/
+
+# Ignore feature folder cucumber
+features/
+
+# Ignore docFiles
+docFiles/

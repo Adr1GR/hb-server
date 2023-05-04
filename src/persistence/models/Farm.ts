@@ -1,6 +1,13 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
-export interface IFarm {
+/**
+ * Interface describing the document structure for a Farm document.
+ * 
+ * @interface IFarm
+ * @returns IFarm
+ * @exports IFarm
+ */
+export interface IFarm extends Document {
   _id?: mongoose.Schema.Types.ObjectId;
   name: string;
   location?: {
@@ -15,6 +22,13 @@ export interface IFarm {
   date?: Date;
 }
 
+/**
+ * Mongoose schema for a Farm document.
+ * 
+ * @const FarmSchema
+ * @type {Schema}
+ * @exports FarmSchema
+ */
 const FarmSchema: Schema = new Schema({
   name: { type: String, required: true },
   location: {
@@ -33,6 +47,9 @@ const FarmSchema: Schema = new Schema({
   date: { type: Date, default: Date.now },
 });
 
-const FarmModel = mongoose.model<IFarm>("Farm", FarmSchema);
+/**
+ * Mongoose model for a Farm document.
+ */
+const FarmModel: Model<IFarm> = mongoose.model<IFarm>("Farm", FarmSchema);
 
 export { FarmModel, FarmSchema };

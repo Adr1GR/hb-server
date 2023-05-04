@@ -1,5 +1,13 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
+/**
+ * Interface describing the document structure for a User document.
+ *
+ * @interface IUser
+ * @interface IUser
+ * @extends {Document}
+ * @group User
+ */
 export interface IUser {
   _id?: mongoose.Schema.Types.ObjectId;
   name: string;
@@ -19,6 +27,14 @@ export interface IUser {
   farm?: mongoose.Schema.Types.ObjectId;
 }
 
+/**
+ * Mongoose schema for a User document.
+ * 
+ * @const UserSchema
+ * @type {Schema}
+ * @exports UserSchema
+ * @group User
+ */
 const UserSchema: Schema = new Schema({
   name: { type: String, required: true },
   surname: { type: String, required: false },
@@ -32,7 +48,7 @@ const UserSchema: Schema = new Schema({
     postalCode: { type: String, required: false },
   },
   phoneNumber: { type: String, required: false },
-  profilePic: { type: String, required: false, default: "shorturl.at/iFZ35" }, // Default profile picture
+  profilePic: { type: String, required: false, default: "../../../public/img/defaultUser.png" }, // Default profile picture
   date: { type: Date, default: Date.now },
   farm: {
     type: mongoose.Schema.Types.ObjectId,
