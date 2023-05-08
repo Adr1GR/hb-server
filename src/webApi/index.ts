@@ -1,27 +1,24 @@
-import express from "express";
-import bodyParser from "body-parser";
-import userRouter from "./routes/userRoutes";
+import { createServer } from "../utils/server";
 import { connectToDatabase } from "../persistence/services/db";
 
-const app = express();
-var cors = require("cors");
+import userRouter from "../webApi/routes/userRoutes";
+import stableRouter from "../webApi/routes/stableRoutes";
 
 connectToDatabase().subscribe({
-	next: (connection) => {
-		console.log("Connected to database");
-	},
+  next: () => {
+    console.log("Connected to database");
+  },
 });
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+const app = createServer();
 
 app.use("/api/user", userRouter);
+app.use("/api/stable", stableRouter);
 
 app.get("/", (req, res) => {
-	res.send("HorseBreeders API");
+  res.send("HorseBreeders API");
 });
 
 app.listen(5000, () => {
-	console.log("Listening on port 5000!");
+  console.log("Listening on port 5000!");
 });

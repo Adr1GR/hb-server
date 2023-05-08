@@ -1,12 +1,12 @@
 import { from, Observable, map } from "rxjs";
 import { IUser } from "../models/User";
 import { UserModel } from "../models/User";
+import mongoose from "mongoose";
 
 /**
  * Interface for user repository.
  *
  * @interface UserRepository
- *
  */
 interface UserRepository {
   /**
@@ -15,6 +15,13 @@ interface UserRepository {
    * @returns {Observable<string>} An observable of a test string.
    */
   test(): Observable<string>;
+
+  /**
+   * Returns an observable of all users.
+   *
+   * @returns {Observable<IUser[]>} An observable of all users.
+   */
+  getUsers(): Observable<IUser[]>;
 
   /**
    * Adds a new user to the database.
@@ -49,32 +56,43 @@ interface UserRepository {
   getUserByName(name: string): Observable<IUser | null>;
 
   /**
-   * TODO - Document this method
+   * Updates the user with the specified id.
    *
-   * @param {IUser} user The user to update.
+   * @param {IUser} user The user to update with the new values.
    * @returns {Observable<IUser | null>}
-   * @category ToDocumentate
    */
   updateUser(user: IUser): Observable<IUser | null>;
 
   /**
-   * TODO - Document this method
+   * Deletes the user with the specified id.
    *
    * @param {string} id The id of the user to delete.
    * @returns {Observable<IUser | null>}
-   * @category ToDocumentate
    */
   deleteUserByid(id: string): Observable<IUser | null>;
 
   /**
-   * TODO - Document this method
+   * Validates the user with the specified email and password.
    *
    * @param {string} email The email of the user to validate.
    * @param {string} password The password of the user to validate.
    * @returns {Observable<IUser | null>}
-   * @category ToDocumentate
+   *
+   * @deprecated
    */
   validateUser(email: string, password: string): Observable<IUser | null>;
+
+  /**
+   * Adds the stable with the specified id to the user with the specified id.
+   *
+   * @param {mongoose.Types.ObjectId} userId The id of the user to add the stable to.
+   * @param {mongoose.Types.ObjectId} stableId The id of the stable to add to the user.
+   * @returns {Observable<IUser | null>}
+   */
+  addStableToUser(
+    userId: mongoose.Types.ObjectId,
+    stableId: mongoose.Types.ObjectId
+  ): Observable<IUser | null>;
 }
 
 /**
@@ -84,6 +102,9 @@ interface UserRepository {
  */
 export const UserRepository: UserRepository = {
   test: () => from(["Hello im a string"]),
+  getUsers: (): Observable<IUser[]> => {
+    return from(UserModel.find().exec());
+  },
   addUser: (user: IUser): Observable<IUser> => {
     return from(UserModel.create(user));
   },
@@ -113,6 +134,16 @@ export const UserRepository: UserRepository = {
         }
         return user;
       })
+    );
+  },
+  addStableToUser: (
+    userId: mongoose.Types.ObjectId,
+    stableId: mongoose.Types.ObjectId
+  ): Observable<IUser | null> => {
+    return from(
+      UserModel.findByIdAndUpdate(userId, {
+        $push: { stables: stableId },
+      }).exec()
     );
   },
 };

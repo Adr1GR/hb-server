@@ -4,7 +4,7 @@ import { HorseModel } from "../models/Horse";
 
 /**
  * Interface for horse repository.
- * 
+ *
  * @interface HorseRepository
  */
 interface HorseRepository {
@@ -40,7 +40,7 @@ interface HorseRepository {
   deleteHorseById(id: string): Observable<IHorse | null>;
 
   /**
-   * TODO - Document this method
+   * Updates the horse with the specified id.
    *
    * @param {IHorse} horse The horse to update.
    * @returns {Observable<IHorse | null>}
@@ -62,24 +62,10 @@ export const HorseRepository: HorseRepository = {
     return from(HorseModel.create(horse));
   },
   getHorseById(id: string): Observable<IHorse | null> {
-    return from(HorseModel.findById(id)).pipe(
-      map((horse) => {
-        if (!horse) {
-          return null;
-        }
-        return horse;
-      })
-    );
+    return from(HorseModel.findById(id).exec());
   },
   deleteHorseById(id: string): Observable<IHorse | null> {
-    return from(HorseModel.findByIdAndDelete(id)).pipe(
-      map((horse) => {
-        if (!horse) {
-          return null;
-        }
-        return horse;
-      })
-    );
+    return from(HorseModel.findByIdAndDelete(id).exec());
   },
   updateHorse(horse: IHorse): Observable<IHorse | null> {
     return from(HorseModel.findByIdAndUpdate(horse._id, horse)).pipe(

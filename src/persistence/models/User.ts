@@ -15,16 +15,17 @@ export interface IUser {
   email: string;
   password: string;
   location?: {
-    name: string;
-    country: string;
-    city: string;
-    address: string;
-    postalCode: string;
+    street?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+    address?: string;
   };
   phoneNumber?: string;
   profilePic?: string;
   date?: Date;
-  farm?: mongoose.Schema.Types.ObjectId;
+  stables?: mongoose.Schema.Types.ObjectId[];
 }
 
 /**
@@ -41,20 +42,21 @@ const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   location: {
-    name: { type: String, required: false },
-    country: { type: String, required: false },
+    street: { type: String, required: false },
     city: { type: String, required: false },
-    address: { type: String, required: false },
+    state: { type: String, required: false },
     postalCode: { type: String, required: false },
+    country: { type: String, required: false },
+    address: { type: String, required: false },
   },
   phoneNumber: { type: String, required: false },
   profilePic: { type: String, required: false, default: "../../../public/img/defaultUser.png" }, // Default profile picture
   date: { type: Date, default: Date.now },
-  farm: {
+  stables: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Farm",
+    ref: "Stable",
     required: false,
-  },
+  }],
 });
 
 const UserModel = mongoose.model<IUser>("User", UserSchema);
