@@ -101,16 +101,21 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "build"],
+  "exclude": ["node_modules", "build", "dist", "docs", "test", "tests", "coverage", "scripts", "tools", "typings", "examples", "examples/**/*", "examples/*"],
   "typedocOptions": {
     "entryPointStrategy": "expand",
     "entryPoints": ["src"],
-    "readme": "README.md",
+    "readme": "docFiles/docReadme.md",
     "out": "../hb-server-docs",
-    "plugin": ["typedoc-plugin-missing-exports", "typedoc-plugin-extras"],
-    "customTitle": "HB Server API",
-    "customDescription" : "HorseBreeders Server API Documentation",
+    "plugin": [
+      "typedoc-plugin-missing-exports",
+      "typedoc-plugin-extras"
+    ],
+    "customTitle": "HB Server Documentation",
+    "customDescription": "HorseBreeders Server Documentation",
     "favicon": "docfiles/logo192.png",
     "footerTypedocVersion": true,
+    "cleanOutputDir": true,
+    "hideGenerator": true
   }
 }
