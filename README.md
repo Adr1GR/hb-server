@@ -14,7 +14,7 @@ This is the server for the HorseBreeders app. It is a RESTful API built with Nod
 
 ## Documentation
 
-[Documentation website](https://hbserverdocs.netlify.app/)
+[Documentation website](https://hb-docs.vercel.app/)
 
 ## License
 
