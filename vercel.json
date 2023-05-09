@@ -3,7 +3,7 @@
     "builds": [
         {
             "src": "./src/webApi/index.ts",
-            "use": "@vercel/wApi"
+            "use": "@vercel/node"
         }
     ],
     "routes" : [
