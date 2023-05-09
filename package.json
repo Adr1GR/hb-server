@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines":{
+    "node": "14.x"
+  },
   "scripts": {
     "wApi": "nodemon src/webApi/index.ts",
     "wApiNormal": "ts-node src/webApi/index.ts",

@@ -1,0 +1,15 @@
+{
+    "version": "2",
+    "builds": [
+        {
+            "src": "./src/webApi/index.ts",
+            "use": "@vercel/wApi"
+        }
+    ],
+    "routes" : [
+        {
+            "src": "/(,*)",
+            "dest": "/"
+        }
+    ]
+}
