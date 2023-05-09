@@ -81,16 +81,19 @@ router.post("/add", async (req: Request, res: Response) => {
   if (!name || !email || !password || !confirmPassword) {
     return res.status(400).send({
       message: "All fields are required",
+      errorCode: "missingFields",
     });
   }
   if (password !== confirmPassword) {
     return res.status(400).send({
       message: "Passwords do not match",
+      errorCode: "passwordMatch",
     });
   }
   if (password.length < 6) {
     return res.status(400).send({
       message: "Password must be at least 6 characters",
+      errorCode: "passwordLength",
     });
   }
 
@@ -100,26 +103,43 @@ router.post("/add", async (req: Request, res: Response) => {
     console.log(user);
     if (user) {
       return res.status(400).send({
-        message: "User already exists",
+        message: "Email already in use",
+        errorCode: "emailInUse",
       });
     }
-    
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userServices.createUserRequest(name, email, hashedPassword);
+    const newUser = await userServices.createUserRequest(
+      name,
+      email,
+      hashedPassword
+    );
     await UserRepository.addUser(newUser).toPromise();
 
+    const jwtToken = jwt.sign(
+      {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        profilePic: newUser.profilePic,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
     return res.status(200).send({
       message: "User added successfully",
+      jwtToken,
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({
-      message: "Server error",
-    });
+      return res.status(500).send({
+        message: "Server error",
+        errorCode: "serverError",
+      });
   }
 });
-
-
 
 /**
  * Login a user: validate user credentials and store their JWT in the localstorage
@@ -136,6 +156,7 @@ router.post("/login", (req: Request, res: Response) => {
   if (!email || !password) {
     return res.status(400).send({
       message: "All fields are required",
+      errorCode: "missingFields",
     });
   }
   UserRepository.getUserByEmail(email).subscribe({
@@ -144,7 +165,12 @@ router.post("/login", (req: Request, res: Response) => {
         bcrypt.compare(password, user.password).then((match) => {
           if (match) {
             const jwtToken = jwt.sign(
-              { id: user._id, name: user.name, email: user.email, profilePic: user.profilePic },
+              {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                profilePic: user.profilePic,
+              },
               JWT_SECRET,
               {
                 expiresIn: "7d",
@@ -157,18 +183,21 @@ router.post("/login", (req: Request, res: Response) => {
           } else {
             return res.status(400).send({
               message: "Invalid credentials",
+              errorCode: "invalidCredentials",
             });
           }
         });
       } else {
         return res.status(400).send({
           message: "Invalid credentials",
+          errorCode: "invalidCredentials",
         });
       }
     },
     error: () => {
       return res.status(500).send({
         message: "Server error",
+        errorCode: "serverError",
       });
     },
   });
