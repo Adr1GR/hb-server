@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/b2930391-2f96-4c48-8ccd-2116c49954a7/resourceGroups/hb-api-app/providers/Microsoft.Web/sites/hb-api-app",
+    "appService.deploySubpath": "."
+}
