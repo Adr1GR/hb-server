@@ -12,10 +12,10 @@ connectToDatabase().subscribe({
 
 const app = createServer();
 
-app.use("api/user", userRouter);
-app.use("api/stable", stableRouter);
+app.use("/api/user", userRouter);
+app.use("/api/stable", stableRouter);
 
-app.get("/", (req, res) => {
+app.get("", (req, res) => {
   res.send("HorseBreeders API");
 });
 
