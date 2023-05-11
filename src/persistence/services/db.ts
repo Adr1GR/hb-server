@@ -4,7 +4,7 @@ import { connect, Connection, model, Schema, Document } from "mongoose";
 require("dotenv").config();
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.1y8mmia.mongodb.net/?retryWrites=true&w=majority`;
-const MONGODBTEST_URI = `mongodb+srv://${process.env.MONGODB_USER_TESTING}:${process.env.MONGODB_PASSWORD_TESTING}@cluster0.iqt8x9e.mongodb.net/?retryWrites=true&w=majority`;
+//const MONGODBTEST_URI = `mongodb+srv://${process.env.MONGODB_USER_TESTING}:${process.env.MONGODB_PASSWORD_TESTING}@cluster0.iqt8x9e.mongodb.net/?retryWrites=true&w=majority`;
 
 /**
  * Connects to the database.

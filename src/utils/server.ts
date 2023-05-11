@@ -8,7 +8,7 @@ export function createServer() {
   app.use(bodyParser.json());
 
   app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: "https://horsebreeders.vercel.app",
   }));
 
   return app;
