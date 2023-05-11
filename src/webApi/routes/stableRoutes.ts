@@ -64,10 +64,10 @@ router.get("/:id", (req: Request, res: Response) => {
  * @return Res status 200 and the stable if it was added successfully, or an error message if not.
  */
 router.post("/add", async (req: Request, res: Response) => {
-  const { name, street, city, postalCode, country, address, state, jwtToken } =
+  const { name, street, city, postalCode, country, address, state, userJWT } =
     req.body;
 
-  if (!jwtToken) {
+  if (!userJWT) {
     return res.status(400).send({
       message: "No jwt token provided",
     });
@@ -80,7 +80,7 @@ router.post("/add", async (req: Request, res: Response) => {
   }
   try {
     try {
-      const decoded = jwt.verify(jwtToken, JWT_SECRET);
+      const decoded = jwt.verify(userJWT, JWT_SECRET);
       //@ts-ignore
       let owner = new mongoose.Types.ObjectId(decoded.id);
       let _id = new mongoose.Types.ObjectId();
