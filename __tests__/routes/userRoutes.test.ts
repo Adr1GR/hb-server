@@ -60,7 +60,7 @@ describe("userRoutes", () => {
     describe("given a user that exist", () => {
       it("should return a 200 status and the user", async () => {
         const { body, statusCode } = await supertest(app)
-          .get(`/api/user/${userId}`)
+          .get(`api/user/${userId}`)
           .expect(200);
         expect(statusCode).toBe(200);
         expect(body._id).toBe(userId);
@@ -70,7 +70,7 @@ describe("userRoutes", () => {
     describe("given a user that does not exist", () => {
       it("should return a 404 status", async () => {
         const _id = new mongoose.Types.ObjectId().toString();
-        await supertest(app).get(`/api/user/${_id}`).expect(404);
+        await supertest(app).get(`api/user/${_id}`).expect(404);
       });
     });
   });
