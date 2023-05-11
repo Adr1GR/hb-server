@@ -7,9 +7,11 @@ export function createServer() {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  app.use(cors({
-    origin: "https://horsebreeders.vercel.app",
-  }));
+  const corsOptions = {
+    origin: process.env.FRONTEND_URL,
+  };
+  
+  app.use(cors(corsOptions));
 
   return app;
 }
