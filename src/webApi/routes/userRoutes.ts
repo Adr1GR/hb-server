@@ -1,11 +1,10 @@
-import express, { Request, Response } from "express";
-import { validationResult, body } from "express-validator";
-import xss from "xss";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { UserRepository } from "../../persistence/repositories/userRepo";
 import { IUser } from "../../persistence/models/User";
-import userServices from "../../persistence/services/user/userServices";
+import { validationResult, body } from "express-validator";
+import express, { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import xss from "xss";
+import jwt from "jsonwebtoken";
 
 require("dotenv").config();
 const router = express.Router();
@@ -129,13 +128,24 @@ router.post(
       password: hashedPassword,
     };
 
-    UserRepository.addUser(user).subscribe({
-      next: (user: IUser) => {
-        return res.status(200).send({
-          message: "User added successfully",
-          user,
-        });
+    UserRepository.addUser(user).subscribe();
+
+    const userJWT = jwt.sign(
+      {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePic: user.profilePic,
       },
+      JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    return res.status(200).send({
+      message: "User added successfully",
+      userJWT: userJWT,
     });
   }
 );
