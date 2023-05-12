@@ -3,14 +3,14 @@
     "name": "horsebreeders-backend",
     "builds": [
       {
-        "src": "index.ts",
+        "src": "src/webApi/index.ts",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "index.ts"
+        "dest": "src/webApi/index.ts"
       }
     ],
     "env": {
