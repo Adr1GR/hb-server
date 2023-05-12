@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 require("dotenv").config();
-const FRONTEND_URL = process.env.FRONTEND_URL;
-console.log(FRONTEND_URL);
+const CORS_ALLOWED_ORIGIN = process.env.CORS_ALLOWED_ORIGIN;
+console.log(CORS_ALLOWED_ORIGIN);
 
 export function createServer() {
   const app = express();
@@ -12,7 +12,7 @@ export function createServer() {
   app.use(bodyParser.json());
 
   const corsOptions = {
-    origin: FRONTEND_URL,
+    origin: CORS_ALLOWED_ORIGIN,
   };
 
   app.use(cors(corsOptions));
