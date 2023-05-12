@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "horsebreeders-backend",
+    "builds": [
+      {
+        "src": "index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "index.js"
+      }
+    ],
+    "env": {
+      "CORS_ALLOWED_ORIGIN": "https://horsebreeders.vercel.app"
+    },
+    "functions": {
+      "api/*": {
+        "memory": 256,
+        "maxDuration": 10
+      }
+    }
+  }
+  
