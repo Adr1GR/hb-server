@@ -1,6 +1,4 @@
 {
-    "version": 2,
-    "name": "horsebreeders-backend",
     "builds": [
       {
         "src": "src/webApi/index.ts",
@@ -8,19 +6,10 @@
       }
     ],
     "routes": [
+      { "handle": "filesystem" },
       {
-        "src": "/api/(.*)",
-        "dest": "src/webApi/index.ts"
+        "src": "/.*",
+        "dest": "/src/webApi/index.ts"
       }
-    ],
-    "env": {
-      "CORS_ALLOWED_ORIGIN": "https://horsebreeders.vercel.app"
-    },
-    "functions": {
-      "api/*": {
-        "memory": 256,
-        "maxDuration": 10
-      }
-    }
+    ]
   }
-  
