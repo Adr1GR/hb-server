@@ -16,12 +16,11 @@ interface HorseRepository {
   test(): Observable<string>;
 
   /**
-   * Adds a new horse to the database.
-   *
-   * @param {IHorse} horse The horse to add.
-   * @returns {Observable<IHorse>} An observable of the added horse.
+   * Returns an observable of all horses.
+   * 
+   * @returns {Observable<IHorse[]>} An observable of all horses.
    */
-  addHorse(horse: IHorse): Observable<IHorse>;
+  getHorses(): Observable<IHorse[]>;
 
   /**
    * Returns an observable of the horse with the specified name, or null if not found.
@@ -30,6 +29,15 @@ interface HorseRepository {
    * @returns {Observable<IHorse | null>} An observable of the found horse, or null if not found.
    */
   getHorseById(id: string): Observable<IHorse | null>;
+
+  /**
+   * Adds a new horse to the database.
+   *
+   * @param {IHorse} horse The horse to add.
+   * @returns {Observable<IHorse>} An observable of the added horse.
+   */
+  addHorse(horse: IHorse): Observable<IHorse>;
+
 
   /**
    * Deletes the horse with the specified id from the database.
@@ -58,10 +66,13 @@ export const HorseRepository: HorseRepository = {
   test(): Observable<string> {
     return from(["Hello World!"]);
   },
+  getHorses(): Observable<IHorse[]> {
+    return from(HorseModel.find().exec());
+  },
   addHorse(horse: IHorse): Observable<IHorse> {
     return from(HorseModel.create(horse));
   },
-  getHorseById(id: string): Observable<IHorse | null> {
+  getHorseById: (id: string): Observable<IHorse | null> => {
     return from(HorseModel.findById(id).exec());
   },
   deleteHorseById(id: string): Observable<IHorse | null> {

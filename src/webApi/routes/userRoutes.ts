@@ -1,6 +1,6 @@
 import { UserRepository } from "../../persistence/repositories/userRepo";
 import { IUser } from "../../persistence/models/User";
-import { validationResult, body } from "express-validator";
+import { validationResult, body, check } from "express-validator";
 import express, { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import xss from "xss";
@@ -118,7 +118,7 @@ router.post(
 
     const name = xss(req.body.name);
     const email = xss(req.body.email);
-    const password = xss(req.body.password);
+    const password = req.body.password;
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -159,58 +159,80 @@ router.post(
  * @param req.body.password The password of the user.
  * @returns Res status 200 and the user's JWT if the user was logged in successfully, or an error message if not.
  */
-router.post("/login", (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).send({
-      message: "All fields are required",
-      errorCode: "missingFields",
-    });
-  }
-  UserRepository.getUserByEmail(email).subscribe({
-    next: (user: IUser | null) => {
-      if (user) {
-        bcrypt.compare(password, user.password).then((match) => {
-          if (match) {
-            const userJWT = jwt.sign(
-              {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                profilePic: user.profilePic,
-              },
-              JWT_SECRET,
-              {
-                expiresIn: "7d",
-              }
-            );
-            return res.status(200).send({
-              message: "User logged in successfully",
-              userJWT,
-            });
-          } else {
-            return res.status(400).send({
-              message: "Invalid credentials",
-              errorCode: "invalidCredentials",
-            });
-          }
-        });
-      } else {
-        return res.status(400).send({
-          message: "Invalid credentials",
-          errorCode: "invalidCredentials",
-        });
-      }
-    },
-    error: () => {
-      return res.status(500).send({
-        message: "Server error",
-        errorCode: "serverError",
+router.post(
+  "/login",
+  body("email")
+    .isLength({ min: 1 })
+    .withMessage("Email address is required")
+    .isEmail()
+    .normalizeEmail()
+    .withMessage("Email address is invalid"),
+  body("password").isLength({ min: 1 }).withMessage("Password is required"),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({
+        errors: errors.array(),
+        state: false,
       });
-    },
-  });
-});
+    }
+
+    const email: string = xss(req.body.email);
+    const password: string = req.body.password;
+
+    try {
+      const user: any | null = await UserRepository.getUserByEmail(email);
+      if (user) {
+        const match: boolean = await bcrypt.compare(password, user.password);
+        if (match) {
+          const userJWT: string = jwt.sign(
+            {
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              profilePic: user.profilePic,
+            },
+            process.env.JWT_SECRET!,
+            {
+              expiresIn: "7d",
+            }
+          );
+          return res.status(200).send({
+            message: "User logged in successfully",
+            userJWT: userJWT,
+            state: true,
+          });
+        }
+      }
+      const newErrors = [
+        {
+          type: "field",
+          value: "",
+          msg: "Invalid credentials",
+          path: "credentials",
+          location: "body",
+        },
+      ];
+      return res.status(400).send(newErrors);
+    } catch (err) {
+      const newErrors = [
+        {
+          type: "field",
+          value: "Server",
+          msg: "Server error",
+          path: "",
+          location: "body",
+        },
+      ];
+      return res.status(500).send({
+        errors: newErrors,
+        state: false,
+      });
+    }
+  }
+);
+
+
 
 /**
  * Update a user by their id.

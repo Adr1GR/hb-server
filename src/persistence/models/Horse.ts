@@ -16,6 +16,7 @@ export interface IHorse {
     owner: mongoose.Schema.Types.ObjectId;
     stables?: mongoose.Schema.Types.ObjectId[];
     offspring?: mongoose.Schema.Types.ObjectId[];
+    pictures?: string[];
 }
 
 /**
@@ -37,6 +38,7 @@ const HorseSchema: Schema = new Schema({
     },
     stables: [{ type: mongoose.Schema.Types.ObjectId, ref: "Stable" }],
     offspring: [{ type: mongoose.Schema.Types.ObjectId, ref: "Horse" }],
+    pictures: [{ type: String, required: false }],
 });
 
 const HorseModel = mongoose.model<IHorse>("Horse", HorseSchema);

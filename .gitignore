@@ -31,3 +31,6 @@ features/
 
 # Ignore docFiles
 docFiles/
+
+# Igoner data_generator
+data_generator/

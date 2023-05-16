@@ -3,6 +3,7 @@ import { connectToDatabase } from "../persistence/services/db";
 
 import userRouter from "../webApi/routes/userRoutes";
 import stableRouter from "../webApi/routes/stableRoutes";
+import horseRouter from "../webApi/routes/horseRoutes";
 
 connectToDatabase().subscribe({
   next: () => {
@@ -14,6 +15,7 @@ const app = createServer();
 
 app.use("/api/user", userRouter);
 app.use("/api/stable", stableRouter);
+app.use("/api/horse", horseRouter);
 
 app.get("", (req, res) => {
   res.send("HorseBreeders API");
