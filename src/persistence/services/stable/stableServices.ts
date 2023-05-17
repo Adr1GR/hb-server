@@ -16,6 +16,7 @@ class StableServices {
     country: string,
     address: string,
     owner: mongoose.Types.ObjectId,
+    pictures?: string[],
     state?: string
   ): IStable {
     return {
@@ -30,6 +31,7 @@ class StableServices {
         country: country,
         address: address,
       },
+      pictures: pictures,
       //@ts-ignore
       owner: owner,
       horses: [],
@@ -59,6 +61,7 @@ class StableServices {
     country: string,
     address: string,
     owner: mongoose.Types.ObjectId,
+    pictures?: string[],
     state?: string
   ) {
 
@@ -73,6 +76,7 @@ class StableServices {
           country,
           address,
           owner,
+          pictures,
           state
         )
       )

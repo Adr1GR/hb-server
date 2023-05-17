@@ -10,13 +10,22 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 export interface IHorse {
     _id?: mongoose.Schema.Types.ObjectId;
     name: string;
+    description?: string;
     breed: string;
+    yearOfBirth?: number;
+    countryOfBirth?: string;
     age: number;
     gender: string;
-    owner: mongoose.Schema.Types.ObjectId;
-    stables?: mongoose.Schema.Types.ObjectId[];
+    color?: string;
+    height?: number;
+    weight?: number;
     offspring?: mongoose.Schema.Types.ObjectId[];
     pictures?: string[];
+    owner: {
+        _id?: mongoose.Schema.Types.ObjectId;
+        name: string;
+    };
+    stables?: mongoose.Schema.Types.ObjectId[];
 }
 
 /**
@@ -29,16 +38,20 @@ export interface IHorse {
 const HorseSchema: Schema = new Schema({
     name: { type: String, required: true },
     breed: { type: String, required: true },
+    yearOfBirth: { type: Number, required: false },
+    countryOfBirth: { type: String, required: false },
     age: { type: Number, required: true },
     gender: { type: String, required: true },
+    color: { type: String, required: false },
+    height: { type: Number, required: false },
+    weight: { type: Number, required: false },
+    pictures: [{ type: String, required: false }],
     owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Owner",
-        required: true,
+        _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+        name: { type: String, required: true },
     },
     stables: [{ type: mongoose.Schema.Types.ObjectId, ref: "Stable" }],
     offspring: [{ type: mongoose.Schema.Types.ObjectId, ref: "Horse" }],
-    pictures: [{ type: String, required: false }],
 });
 
 const HorseModel = mongoose.model<IHorse>("Horse", HorseSchema);

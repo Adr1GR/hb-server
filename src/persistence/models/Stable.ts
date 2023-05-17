@@ -18,6 +18,7 @@ export interface IStable {
     country: string;
     address: string;
   };
+  pictures?: string[];
   owner?: mongoose.Schema.Types.ObjectId;
   horses?: mongoose.Schema.Types.ObjectId[];
   date?: Date;
@@ -41,6 +42,7 @@ const StableSchema: Schema = new Schema({
     country: { type: String, required: true },
     address: { type: String, required: true },
   },
+  pictures: [{ type: String, required: false }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Owner",
