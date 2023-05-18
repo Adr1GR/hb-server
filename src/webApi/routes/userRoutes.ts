@@ -264,4 +264,24 @@ router.post("/update/:id", (req: Request, res: Response) => {
   }
 });
 
+router.post("/verify", (req: Request, res: Response) => {
+  const { userJWT } = req.body;
+  if (!userJWT) {
+    return res.status(400).send({
+      message: "No user JWT provided",
+    });
+  }
+  try {
+    const decoded = jwt.verify(userJWT, JWT_SECRET);
+    return res.status(200).send({
+      message: "User JWT is valid",
+      user: decoded,
+    });
+  } catch (err) {
+    return res.status(400).send({
+      message: "User JWT is invalid",
+    });
+  }
+});
+
 export default router;
