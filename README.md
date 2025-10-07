@@ -1,6 +1,6 @@
-# HorseBreeders Server
+# HorseBreeders Backend
 
-This is the server for the HorseBreeders app. It is a RESTful API built with Node.js, Express, and MongoDB.
+This is the backend for the HorseBreeders app. It is a RESTful API built with Node.js, Express, and MongoDB.
 
 ## Installation
 
